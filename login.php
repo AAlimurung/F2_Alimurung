@@ -1,113 +1,85 @@
 <?php
-	include ('connect.php');
-	include('includes/header.php')
-?> 
+    session_start();
+    include 'connect.php';
+?>
 
-<!-- 
-    Programmer: Ana Alimurung
-    Date: 16 February 2024
-    CSIT226 - IM
-    html code for landing page
-    has CSS and JS for the log-in form
-    About Us will appear after logging in (username: AnNi, password: 12345)
- -->
+<body>
+    <link href="css/login-style.css" type="text/css" rel="stylesheet" />
+    <link href="css/common-style.css" type="text/css" rel="stylesheet" />
 
- 
- <!DOCTYPE html>
- <html>
-     <head>
-         <meta charset="UTF-8">
-         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-         <title>CONquest: Event Planner | Log-In</title>
-         
-         <link rel="stylesheet" href="css/styles.css"/>
-         <link rel="stylesheet" href="css/styles2.css"/>
-         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-        <!-- GOOGLE FONTS-->
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Play&display=swap" rel="stylesheet">
+    <center>
+        <img class="logo-big" src="images/logo-1.png">
+    </center>
         
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
-     </head>
-     <body>
-         <!-- log in form -->
-         <section class="content-login">
-             <h1>Join the CONquests</h1>
-             <div class="login-time">
-                 <div class="log-in">
-                     <h2>LOG IN</h2>
-                     <form id="log-in-form" method="POST">
-                            <div class="input">
-                                <!-- username -->
-                                <label for="username">Username: </label>
-                                <input type="text" id="username" name="username" required/>
-                            </div>
-                            <div class="input">
-                                <!-- password -->
-                                <label for="pass">Password: </label>
-                                <input type="password" id="pass" name="password" required/>
-                            </div>
-                            <button class="btn-1" name="login" type="submit">LOG IN</button>
-                     </form>
-                     <p id="error" class="err-msg"></p>
-                 </div>
-             </div>
-             <p class="extra">
-                 Need an account? <a href="#">Sign up for free.</a>
-             </p>
-             <p class="extra">
-                 Forgot password?
-             </p>
-         </section>
-         <!-- <script src = "js/ind.js"></script> -->
-     </body>
-     <!-- finished: 18 February 2024 -->
- </html>
+    <div class="login-box">
+        <h2> L O G I N </h2>
+        <form>
+            <div class="user-box">
+                <input type="text" name="" required="">
+                <label>Username</label>
+            </div>
+            <div class="user-box">
+                <input type="password" name="" required="">
+                <label>Password</label>
+                <a id="forgot-pass" href="#">
+                    Forgot Password?
+                </a>
+            </div>
+            <button class="login-btn" type="submit">
+                <!-- for effect ning mga span mamsh ha -->
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                Login
+            </button>
+        </form>
+        <hr>
+        <span class="no-account">
+            Don't have an account?
+            <a id="to-register" href="registration.php">Register</a>
+        </span>
+        </div>
+
+</body>
 
 <?php
     if(isset($_POST['login'])){
-		$uname = $_POST['username'];
-		$pwd = $_POST['password'];
+        $uname = $_POST['username'];
+        $pwd = $_POST['password'];
+        //check tbluseraccount if username is existing
+        $sql ="Select * from tbluseraccount where username='".$uname."'";
 
-		//check tbluseraccount if username is existing
-		$sql ="Select * from tbluseraccount where username='".$uname."'";
-		
-		$result = mysqli_query($connection,$sql);	
-		//no. of counts of the same username
-		$count = mysqli_num_rows($result);
-        //ika-pila na row na same ang user input
-		$row = mysqli_fetch_array($result);
-		
-		if($count == 0){
-			echo "<script language='javascript'>
-					// alert('Username not existing.');
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'You Shall Not Pass',
-                        text: 'Username not existing.'
-                    });
-				  </script>";
-		}else{
-            if(password_verify($pwd, $row[3])) {
+        $result = mysqli_query($connection,$sql);
+
+        //number of counts that has the same username
+        $count = mysqli_num_rows($result);
+
+        //ika-pila na row na same ang user input ug 
+        $row = mysqli_fetch_array($result);
+        if ($count == 0){
+            // echo "<script language='javascript'>
+            //             alert('username not existing.');
+            //         </script>";
+            echo "<script>
+                    var x = document.getElementById('exist');
+                    x.innerHTML = '*Username does not exist';
+                </script>
+            ";
+            //hey
+        } else {
+            if ( password_verify($pwd, $row[3] ) ){
                 $_SESSION['username']=$row[0];
-			    header("location: index.php");
-            } else{
-                echo "<script language='javascript'>
-                    // alert('Incorrect password');
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'You Shall Not Pass',
-                        text: 'Incorrect password!'
-                    });
+                header("location: index.php");
+            } else {
+                // echo "<script language='javascript'>
+                //         alert('Incorrect password');
+                //     </script>";
+                echo "<script>
+                        var x = document.getElementById('exist');
+                        x.innerHTML = '*Incorrect password';
                     </script>";
-            }		
-		}
-	}
-?>
-
-
- <?php
-	require_once('includes/footer.php');
+            }
+        }
+    }
 ?>
