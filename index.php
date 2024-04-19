@@ -1,12 +1,11 @@
 <?php
-    session_start();
 	include 'connect.php';
 ?>
 
 <head>
     <meta charset="UTF-8">
     <title>CONquest: Event Planner</title>
-    <link href="css/common-style.css" type="text/css" rel="stylesheet">
+    <link href="css/common-styles.css" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 </head>
@@ -37,7 +36,7 @@
         ?>    
         <?php
             $ctr = 1;
-            $sql_events ="Select * from tblevents";
+            $sql_events ="Select * from tblevent";
             $all_events = mysqli_query($connection,$sql_events);
         ?>
         <table class="table" cellspacing="1" width="75%">
@@ -67,6 +66,9 @@
                     <td><?= $row['date']; ?> </td>
                     <td><?= $row['time']; ?> </td>
                     <td><?= $row['venue']; ?> </td>
+                    <td>
+                        <a href="">Delete</a>
+                    </td>
                 </tr>
                 
                 <?php endwhile;?>
@@ -107,6 +109,9 @@
                     <td> <?= $admin_account['firstName']; ?> </td>
                     <td> <?= $admin_account['lastName']; ?> </td>
                     <td> <?= $admin_account['username']; ?> </td>
+                    <td>
+                        <a href="">Delete</a>
+                    </td>
                     
                 </tr>
                 
@@ -148,7 +153,9 @@
                     <td> <?= $user_account['firstName']; ?> </td>
                     <td> <?= $user_account['lastName']; ?> </td>
                     <td> <?= $user_account['username']; ?> </td>
-                    
+                    <td>
+                        <a href="">Delete</a>
+                    </td>
                 </tr>
                 
                 <?php endwhile;?>

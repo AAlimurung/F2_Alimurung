@@ -9,7 +9,7 @@
         $time = $_POST['time'];
         $description = $_POST['description'];
         
-        $mysqli->query("INSERT into tbleven ($eventID, $eventName, $eventType, $date, $time, $description) values ('$eventID', '$eventName', '$eventType', '$date', '$time', '$description')") or die(mysqli_error($mysqli));
+        $mysqli->query("INSERT into tblevent ($eventID, $eventName, $eventType, $date, $time, $description) values ('$eventID', '$eventName', '$eventType', '$date', '$time', '$description')") or die(mysqli_error($mysqli));
         header("Location: event.php");
     }
 

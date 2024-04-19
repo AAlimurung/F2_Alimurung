@@ -1,13 +1,12 @@
 <?php
-    session_start();
 	include 'connect.php';
 
     // error_reporting(E_ALL);
     // ini_set('display_errors', 1);
 ?>  
 <body>
-    <link href="css/register-style.css" type="text/css" rel="stylesheet"/>
-    <link href="css/common-style.css" type="text/css" rel="stylesheet"/>
+    <link href="css/register-styles.css" type="text/css" rel="stylesheet"/>
+    <link href="css/common-styles.css" type="text/css" rel="stylesheet"/>
 
     <center>
         <img class="logo-big" src="images/logo-1.png"/>
@@ -147,9 +146,9 @@
 
                 // Insert into tbladminstatus
                 $isAdmin = true;
-                $sql_adminStatus = "INSERT INTO tbladminstatus (isAdmin, adminID) VALUES (?, ?)";
+                $sql_adminStatus = "INSERT INTO tbladminstatus (isAdmin, accountID) VALUES (?, ?)";
                 $stmt_adminStatus = $connection->prepare($sql_adminStatus);
-                $stmt_adminStatus->bind_param("ii", $isAdmin, $adminID);
+                $stmt_adminStatus->bind_param("ii", $isAdmin, $accountID);
                 $stmt_adminStatus->execute();
                 $adminStatusID = $connection->insert_id;
 
@@ -164,6 +163,7 @@
                 $_SESSION['adminID'] = $adminID;
                 $_SESSION['username'] = $username;
             } else if ($account_type == 'user') {
+                
                 // Insert into tbluseraccount
                 $sql_userInsert = "INSERT INTO tbluseraccount (accountID) VALUES (?)";
                 $stmt_userInsert = $connection->prepare($sql_userInsert);

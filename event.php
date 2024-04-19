@@ -1,10 +1,9 @@
-<link href="css/common-style.css" type="text/css" rel="stylesheet">
-<link href="css/create-event.css" type="text/css" rel="stylesheet">
+<link href="css/common-styles.css" type="text/css" rel="stylesheet">
+<link href="css/event-styles.css" type="text/css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <body>
     <?php
-        session_start();
     	include('includes/header.php');
     	include 'connect.php';
     ?>
@@ -76,17 +75,17 @@
     <?php
         if(isset($_POST['create'])){
             $eventName = $_POST['event-name'];
-            $eventType = $_POST['event-type'];
+            $evenType = $_POST['event-type'];
             $eventDate = $_POST['date'];
             $eventTime = $_POST['time'];
             $eventVenue = $_POST['venue'];
         }
 
-        $sql1 = "SELECT * FROM tblevents WHERE eventName='$eventName' AND eventType='$eventType'";
+        $sql1 = "SELECT * FROM tblevent WHERE eventName='$eventName' AND eventType='$eventType'";
         $result = mysqli_query($connection,$sql1);
         $row = mysqli_num_rows($result);
         if($row == 0){
-            $sql ="Insert into tblevents(eventName, eventType, date, time, venue) values( ' ".$eventName." ',' ".$eventType." ',' ".$eventDate." ',' ".$eventTime." ',' ".$eventVenue."' )";
+            $sql ="Insert into tblevent(eventName, eventType, date, time, venue) values( ' ".$eventName." ',' ".$eventType." ',' ".$eventDate." ',' ".$eventTime." ',' ".$eventVenue."' )";
             mysqli_query($connection,$sql);
             echo "<script language='javascript'>
                         alert('New record saved.');
