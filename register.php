@@ -198,3 +198,7 @@
     echo "<script>alert('Form not submitted');</script>";
     }
 ?>
+
+<?php
+    include('includes/footer.php');
+?>

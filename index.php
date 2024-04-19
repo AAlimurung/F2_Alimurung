@@ -67,7 +67,7 @@
                     <td><?= $row['time']; ?> </td>
                     <td><?= $row['venue']; ?> </td>
                     <td>
-                        <a href="">Delete</a>
+                        <a href="includes/deleteEvents.php?eventID=<?=$row['eventID'];?>">Delete</a>
                     </td>
                 </tr>
                 
