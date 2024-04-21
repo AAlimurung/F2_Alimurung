@@ -1,0 +1,51 @@
+/* ABOUT US CSS */
+.about-us h1{
+    padding-top: 2%;
+    padding-bottom: 2px;
+    color: black;
+    text-align: center;
+    font-family: 'Play', sans-serif;
+    font-size: 48px;
+    /* font-style: italic; */
+    font-weight: 400;
+    line-height: normal;
+}
+
+.staff{
+    /* display: flex; */
+    margin-top: 3%;
+    justify-content: left;
+    border: 1px solid rgba(77, 82, 95, 0.03);
+    border-radius: 15px;
+    background-color: #F0F8FF;
+    width: 55%;
+    padding: 30px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+.staff img{
+    width: 195px;
+    border-radius: 50%;
+    height: fit-content;
+    float: left;
+    margin: 15px 15px 0 0;
+}
+
+.staff h2{
+    font-family: 'Julius Sans One', sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: normal;
+    color: black;
+    text-align: left;
+}
+
+.staff p{
+    width: 680px;
+}
+
+/* CONTACT-US CSS */

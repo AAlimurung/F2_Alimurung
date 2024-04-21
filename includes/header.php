@@ -6,13 +6,13 @@
 		<a href="index.php">
 			<span class="nav-item">Home</span>
 		</a>
-		<a href="#">
+		<a href="event.php">
 			<span class="nav-item">Events</span>
 		</a>
 		<?php
 			if (!isset($_SESSION['username'])){
 				echo '
-				<a href="registration.php">
+				<a href="register.php">
 					<span class="nav-item">Sign-Up</span>
 				</a>
 				<a href="login.php">

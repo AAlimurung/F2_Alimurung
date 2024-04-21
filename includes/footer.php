@@ -11,7 +11,7 @@
 
 	<div class="row">
 		<ul>
-			<li><a href="#">Contact us</a></li>
+			<li><a href="contact-use.php">Contact us</a></li>
 			<li><a href="about-us.php">About us</a></li>
 		</ul>
 	</div>

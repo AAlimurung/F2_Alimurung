@@ -24,7 +24,7 @@
                 
                 echo '
                 <div class="for-admin">
-                    <a href="create-event.php">
+                    <a href="event.php">
                         <span>Create Event</span>
                     </a>
                     <a href="#">
@@ -110,7 +110,7 @@
                     <td> <?= $admin_account['lastName']; ?> </td>
                     <td> <?= $admin_account['username']; ?> </td>
                     <td>
-                        <a href="">Delete</a>
+                    <a href="includes/deleteAdmin.php?adminID=<?=$row['adminID'];?>">Delete</a>
                     </td>
                     
                 </tr>
@@ -154,7 +154,7 @@
                     <td> <?= $user_account['lastName']; ?> </td>
                     <td> <?= $user_account['username']; ?> </td>
                     <td>
-                        <a href="">Delete</a>
+                        <a href="includes/deleteUser.php?userID=<?=$row['userID'];?>">Delete</a>
                     </td>
                 </tr>
                 
