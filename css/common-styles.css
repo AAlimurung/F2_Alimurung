@@ -99,6 +99,21 @@ body{
     background: #B3C8CF;
 }
 
+.table td a {
+    text-decoration: none;
+    color: black;
+    background-color: #378CE7;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 10px 0;
+    transition: .5s;
+}
+
+.table td a:hover{
+    background-color: #5356FF;
+    transition: .5s;
+}
+
 /* footer part pero wa lang contents */
 .footer{
     position: relative;
