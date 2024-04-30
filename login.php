@@ -47,9 +47,7 @@
 
 <?php
     if(isset($_POST['login'])){
-
         // echo "<script>console.log('i was called!')</script>";
-
         $uname = $_POST['username'];
         $pwd = $_POST['password'];
         //check tbluseraccount if username is existing

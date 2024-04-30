@@ -15,8 +15,8 @@
 				<a href="register.php">
 					<span class="nav-item">Sign-Up</span>
 				</a>
-				<a href="login.php">
-					<span class="nav-item">Login</span>
+				<a href="logout.php">
+					<span class="nav-item">Logout</span>
 				</a>
 				';
 			} else {

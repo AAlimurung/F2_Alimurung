@@ -26,41 +26,6 @@
             <div>
                 <label for="time">Time</label>
                 <input type="time" name="time" id="time">
-                <!-- <select id="hour">
-                    <option value="">Hour</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                </select>
-                :
-                <select id="minute">
-                    <option value="">Minute</option>
-                    <option value="0">00</option>
-                    <option value="5">05</option>
-                    <option value="10">10</option>
-                    <option value="15">15</option>
-                    <option value="20">20</option>
-                    <option value="25">25</option>
-                    <option value="30">30</option>
-                    <option value="35">35</option>
-                    <option value="40">40</option>
-                    <option value="45">45</option>
-                    <option value="50">50</option>
-                    <option value="55">55</option>
-                </select>
-                <select id="period">
-                    <option value="AM">AM</option>
-                    <option value="PM">PM</option>
-                </select> -->
             </div>
             <div id="venue">
                 <label for="address">Venue</label>
@@ -74,8 +39,8 @@
 
     <?php
         if(isset($_POST['create'])){
-            $eventName = $_POST['event-name'];
-            $evenType = $_POST['event-type'];
+            $eventName = $_POST['event-name']; //di daw declared
+            $evenType = $_POST['event-type']; //di daw declared
             $eventDate = $_POST['date'];
             $eventTime = $_POST['time'];
             $eventVenue = $_POST['venue'];

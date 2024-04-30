@@ -138,9 +138,9 @@
                 }
 
                 // Insert into tbladminaccount
-                $sql_adminInsert ="INSERT INTO tbladminaccount (organizationID, accountID) VALUES (?, ?)";
+                $sql_adminInsert ="INSERT INTO tbladminaccount (organizationID, accountID, firstName, lastName, age, displayName) VALUES (?, ?, ?, ?, ?, ?)";
                 $stmt_adminInsert = $connection->prepare($sql_adminInsert);
-                $stmt_adminInsert->bind_param("ii", $orgID, $accountID);
+                $stmt_adminInsert->bind_param("iissis", $orgID, $accountID, $fname, $lname, $age, $username);
                 $stmt_adminInsert->execute();
                 $adminID = $connection->insert_id;
 
@@ -197,8 +197,4 @@
     } else {
     echo "<script>alert('Form not submitted');</script>";
     }
-?>
-
-<?php
-    include('includes/footer.php');
 ?>
