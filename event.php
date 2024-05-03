@@ -7,6 +7,16 @@
     	include('includes/header.php');
     	include 'connect.php';
     ?>
+    
+    <div class="for-admin">
+        <a href="report-page.php">
+            <span>Event Dash</span>
+        </a>
+        <a href="your_events.php">
+            <span>Your Events</span>
+         </a>
+        </div>
+                 
     <div class="main">
 
         <form action="" method="POST">

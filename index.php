@@ -22,6 +22,10 @@
         <?php
             if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] === true){
                 
+                $ctr = 1;
+                $sql_admin ="SELECT * FROM tbladminaccount";
+                $all_admin = mysqli_query($connection,$sql_admin);
+    
                 echo '
                 <div class="for-admin">
                     <a href="event.php">
@@ -30,10 +34,50 @@
                     <a href="your_events.php">
                         <span>Your Events</span>
                     </a>
-                </div>
+                </div>    
+                
+                <table class="table" cellspacing="1" width="75%">
+                <center>
+                <h1> Admins </h1>
+            </center>
+            <thead>
+                <tr>
+                    <th>Seq. No.</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Username</th>
+                </tr>
+            </thead>
+            <tbody>
+                ' ?>
+                <?php while($row = $all_admin->fetch_assoc()): 
+             
+                    $sql_account ="SELECT * FROM tblaccount WHERE accountID='".$row['accountID']."'";
+                    $account_result = mysqli_query($connection,$sql_account);
+                    $admin_account = mysqli_fetch_array($account_result);
+                
+                ?>
+                <?php echo '
+                <tr>
+                    <td> <?= $ctr++; ?> </td>
+                    <td> '.$admin_account['firstName'].' </td>
+                    <td> '. $admin_account['lastName'].' </td>
+                    <td> '.$admin_account['username'].' </td>
+                    <td>
+                    <a href="includes/deleteAdmin.php?adminID='.$row['adminID'].'">Delete</a>
+                    </td>
+                    
+                </tr>
+                '?>
+                    <?php endwhile;?>
+                <?php
+                echo '
+                </tbody>
+                </table>
+                
                 ';
             }
-        ?>    
+            ?>    
         <?php
             $ctr = 1;
             $sql_events ="Select * from tblevent";
@@ -76,50 +120,6 @@
             </tbody>
         </table>
 
-        <?php
-            $ctr = 1;
-            $sql_admin ="SELECT * FROM tbladminaccount";
-            $all_admin = mysqli_query($connection,$sql_admin);
-        ?>
-
-        <table class="table" cellspacing="1" width="75%">
-            <center>
-                <h1> Admins </h1>
-            </center>
-            <thead>
-                <tr>
-                    <th>Seq. No.</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Username</th>
-                </tr>
-            </thead>
-            <tbody>
-
-                <?php while($row = $all_admin->fetch_assoc()): 
-             
-                    $sql_account ="SELECT * FROM tblaccount WHERE accountID='".$row['accountID']."'";
-                    $account_result = mysqli_query($connection,$sql_account);
-                    $admin_account = mysqli_fetch_array($account_result);
-                
-                ?>
-            
-                <tr>
-                    <td> <?= $ctr++; ?> </td>
-                    <td> <?= $admin_account['firstName']; ?> </td>
-                    <td> <?= $admin_account['lastName']; ?> </td>
-                    <td> <?= $admin_account['username']; ?> </td>
-                    <td>
-                    <a href="includes/deleteAdmin.php?adminID=<?=$row['adminID'];?>">Delete</a>
-                    </td>
-                    
-                </tr>
-                
-                <?php endwhile;?>
-                
-            </tbody>
-        </table>
-        
         <?php
             $ctr = 1;
             $sql_user ="SELECT * FROM tbluseraccount";
