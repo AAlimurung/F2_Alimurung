@@ -1,11 +1,14 @@
+<?php
+    include 'connect.php';
+?>
+
 <link href="css/common-styles.css" type="text/css" rel="stylesheet">
-<link href="css/event-styles.css" type="text/css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="css/create-event-styles.css" type="text/css" rel="stylesheet">
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
 
 <body>
     <?php
     	include('includes/header.php');
-    	include 'connect.php';
     ?>
     
     <div class="for-admin">
@@ -49,31 +52,37 @@
 
     <?php
         if(isset($_POST['create'])){
-            $eventName = $_POST['event-name']; //di daw declared
-            $evenType = $_POST['event-type']; //di daw declared
+            $eventName = $_POST['event-name'];
+            $eventType = $_POST['event-type'];
             $eventDate = $_POST['date'];
             $eventTime = $_POST['time'];
             $eventVenue = $_POST['venue'];
+    
+            $adminID = $_SESSION['adminID'];
+    
+            $sql1 = "SELECT * FROM tblevent WHERE eventName=? AND eventType=?";
+            $stmt = $connection->prepare($sql1);
+            $stmt->bind_param("ss", $eventName, $eventType);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->num_rows;
+    
+            if($row == 0){
+                $sql ="INSERT INTO tblevent(adminID, eventName, eventType, date, time, venue) VALUES (?, ?, ?, ?, ?, ?)";
+                $stmt = $connection->prepare($sql);
+                $stmt->bind_param("isssss", $adminID, $eventName, $eventType, $eventDate, $eventTime, $eventVenue);
+                $stmt->execute();
+                echo "<script language='javascript'>
+                            alert('New record saved.');
+                      </script>";
+                // Remove header() call from here
+            }else{
+                echo "<script>
+                        var x = document.getElementById('exist');
+                        x.innerHTML = '*Event already exists';
+                      </script>";
+            }
         }
-
-        $sql1 = "SELECT * FROM tblevent WHERE eventName='$eventName' AND eventType='$eventType'";
-        $result = mysqli_query($connection,$sql1);
-        $row = mysqli_num_rows($result);
-        if($row == 0){
-            $sql ="Insert into tblevent(eventName, eventType, date, time, venue) values( ' ".$eventName." ',' ".$eventType." ',' ".$eventDate." ',' ".$eventTime." ',' ".$eventVenue."' )";
-            mysqli_query($connection,$sql);
-            echo "<script language='javascript'>
-                        alert('New record saved.');
-                  </script>";
-            header("location: index.php");
-        }else{
-            echo "<script>
-                    var x = document.getElementById('exist');
-                    x.innerHTML = '*Username or Email Address already exist';
-                  </script>";
-                  //hey
-        }
-
     ?>
 
     <?php

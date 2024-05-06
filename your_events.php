@@ -32,10 +32,11 @@
                 }
             ?>   
             
-            <?php
+        <?php
             $ctr = 1;
+            $adminID = $_SESSION['adminID'];
             $sql_events ="Select * from tblevent";
-            $all_events = mysqli_query($connection,$sql_events);
+            $all_events = mysqli_query($connection, $sql_events);
         ?>
         <table class="table" cellspacing="1" width="75%">
             <center>
