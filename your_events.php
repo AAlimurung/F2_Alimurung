@@ -1,19 +1,15 @@
 <!-- for the list of events in admin account -->
+<!-- events.php sa file ni ninya -->
 <?php
     include 'connect.php';
 ?>
 
-<head>
-    <meta charset="UTF-8">
-    <title>CONquest: Event Planner</title>
-    <link href="css/common-styles.css" type="text/css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-</head>
+<link rel="stylesheet" href="css/events-styles.css" type="text/css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <body>
     <?php
-    	include('includes/header.php');
+    	require_once 'includes/header.php';
     ?>  
     <div class="list-event">
         <?php
@@ -32,13 +28,13 @@
                 }
             ?>   
             
-        <?php
+        <!-- <?php
             $ctr = 1;
             $adminID = $_SESSION['adminID'];
             $sql_events ="Select * from tblevent";
             $all_events = mysqli_query($connection, $sql_events);
-        ?>
-        <table class="table" cellspacing="1" width="75%">
+        ?> -->
+        <!-- <table class="table" cellspacing="1" width="75%">
             <center>
                 <h1> Events </h1>
             </center>
@@ -73,7 +69,8 @@
                 <?php endwhile;?>
                 
             </tbody>
-        </table>
+        </table> -->
+    
     </div>
 
     <?php

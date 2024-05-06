@@ -1,8 +1,9 @@
+<!-- create events file -->
 <?php
     include 'connect.php';
 ?>
 
-<link href="css/common-styles.css" type="text/css" rel="stylesheet">
+<!-- <link href="css/common-styles.css" type="text/css" rel="stylesheet"> -->
 <link href="css/create-event-styles.css" type="text/css" rel="stylesheet">
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
 
@@ -11,6 +12,7 @@
     	include('includes/header.php');
     ?>
     
+    <!-- saved code from last -->
     <div class="for-admin">
         <a href="report-page.php">
             <span>Event Dash</span>
@@ -20,71 +22,106 @@
          </a>
         </div>
                  
-    <div class="main">
+        <div class="main">
 
-        <form action="" method="POST">
-            <h3>Create Event</h3>
-            <div>
+<form action="" method="POST" enctype="multipart/form-data">
+    <h2>CREATE EVENT</h2>
+    
+    <div class="event-form">
+        <div class="inline">
+            <div class="for-event-pic">
+                <img name="the-event-pic" src="images/274000211_507612747391631_804088690670275201_n.jpg" id="preview-pic">
+                <label for="pic-event" id="btn-add-pic">Add Picture</label>
+                <input type="file" name="image" id="pic-event" accept=".jpeg, .png, .jpg" value="" required>
+            </div>
+            <script src="js/eventpic.js"></script>
+            <div class="info-events">
                 <label for="event-name">Event Name</label>
-                <input type="text" name="event-name" id="first-name">
+                <input type="text" name="event-name" id="first-name" required>
             </div>
-            <div>
+            <div class="info-events">
                 <label for="event-type">Event Type</label>
-                <input type="text" name="event-type" id="event-type">
-                </div>
-            <div>
+                <input type="text" name="event-type" id="event-type" required>
+            </div>
+        </div>
+        <div class="inline">
+            <div class="info-events">
                 <label for="date">Date</label>
-                <input type="date" name="date" id="date">
+                <input type="date" name="date" id="date" required>
             </div>
-            <div>
+            <div class="info-events">
                 <label for="time">Time</label>
-                <input type="time" name="time" id="time">
+                <input type="time" name="time" id="time" required>
             </div>
-            <div id="venue">
+            <div  class="info-events">
                 <label for="address">Venue</label>
-                <input type="text" name="venue" id="address">
-                <!-- <input type="text" id="city"  placeholder="Street Address" placeholder="City"> -->
+                <input type="text" name="venue" id="address" required>
             </div>
-            <button name="create" type="submit">CREATE</button>
-        </form>
-
+            <div  class="info-events">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" required></textarea>
+            </div>
+        </div>
     </div>
+    <br>
+    <button name="create" type="submit">CREATE</button>
+</form>
 
-    <?php
-        if(isset($_POST['create'])){
-            $eventName = $_POST['event-name'];
-            $eventType = $_POST['event-type'];
-            $eventDate = $_POST['date'];
-            $eventTime = $_POST['time'];
-            $eventVenue = $_POST['venue'];
+</div>
+
+<?php
+if(isset($_POST['create'])){
+    //kulang nig description and image
+    //goal in here is to tarong the ui of the form, na pwede mu insert og image
+    $eventName = $_POST['event-name'];
+    $eventType = $_POST['event-type'];
+    $eventDate = $_POST['date'];
+    $eventTime = $_POST['time'];
+    $eventVenue = $_POST['venue'];
+    $eventDescription = $_POST['description'];
+
+    $statement_checkEvents = $connection->prepare("SELECT eventName, eventType FROM tblevents WHERE eventName=? AND eventType=?");
+    $statement_checkEvents->bind_param("ss", $eventName, $eventType);
+    $statement_checkEvents->execute();
+    $result = $statement_checkEvents->get_result()->fetch_row();
     
-            $adminID = $_SESSION['adminID'];
-    
-            $sql1 = "SELECT * FROM tblevent WHERE eventName=? AND eventType=?";
-            $stmt = $connection->prepare($sql1);
-            $stmt->bind_param("ss", $eventName, $eventType);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $row = $result->num_rows;
-    
-            if($row == 0){
-                $sql ="INSERT INTO tblevent(adminID, eventName, eventType, date, time, venue) VALUES (?, ?, ?, ?, ?, ?)";
-                $stmt = $connection->prepare($sql);
-                $stmt->bind_param("isssss", $adminID, $eventName, $eventType, $eventDate, $eventTime, $eventVenue);
-                $stmt->execute();
-                echo "<script language='javascript'>
-                            alert('New record saved.');
-                      </script>";
-                // Remove header() call from here
-            }else{
-                echo "<script>
-                        var x = document.getElementById('exist');
-                        x.innerHTML = '*Event already exists';
-                      </script>";
+    if(!$result){
+        
+        $statement_addEvents = $connection->prepare("INSERT INTO tblevents (adminID, eventName, eventType, date, time, venue, description) VALUES (?,?,?,?,?,?,?)");
+        $statement_addEvents->bind_param("issssss", $_SESSION['adminID'], $eventName, $eventType, $eventDate, $eventTime, $eventVenue, $eventDescription);
+        $statement_addEvents->execute();
+        $add_pic = $connection->insert_id;
+        
+        // echo "Upload Error: " . $_FILES['image']['error'];  
+        // echo "Uploaded File: " . $_FILES['image']['tmp_name'];
+        // print_r($_FILES['image']);
+
+
+        if (isset($_FILES['image'])) {
+            $temp_pic_name = $_FILES['image']['tmp_name'];
+            $pic_extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+            $unique_filename = uniqid('', true) . '.' . $pic_extension;
+            
+            if ($_FILES['image']['error'] !== UPLOAD_ERR_OK) {
+                echo "Upload Error: " . $_FILES['image']['error'];
+            } else {
+                move_uploaded_file($temp_pic_name, "images/events/" . $unique_filename);
+
+                $statement_addPicEvents = $connection->prepare("UPDATE tblevents SET image=? WHERE eventID=?");
+                $statement_addPicEvents->bind_param("si", $unique_filename, $add_pic);
+                $statement_addPicEvents->execute();
             }
         }
-    ?>
 
+        header("location: index.php");
+    }else{
+        echo "<script>
+                console.log('Not successful');
+              </script>";
+    }
+}
+
+?>
     <?php
     	include('includes/footer.php');
     ?>
