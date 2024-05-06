@@ -36,13 +36,14 @@
             <div class="user-info">
                 <?php
                     if ($_SESSION['isAdmin']){
-                        $query = "SELECT firstName, lastName, username FROM tblaccount, tbladminaccount WHERE adminID=? AND tblaccount.accountID=tbladminaccount.accountID";
+                        // $query = "SELECT firstName, lastName, username FROM tblaccount, tbladminaccount WHERE adminID=? AND tblaccount.accountID=tbladminaccount.accountID";
+                        $query = "SELECT tblaccount.firstName, tblaccount.lastName, tblaccount.username FROM tblaccount, tbladminaccount WHERE adminID=? AND tblaccount.accountID=tbladminaccount.accountID";
                         $statement = $connection->prepare($query);
                         $statement->bind_param("s", $_SESSION['adminID']);
                         $statement->execute();
                         $res = $statement->get_result();
                     } else {
-                        $query = "SELECT firstName, lastName, username FROM tblaccount, tbluseraccount WHERE userID=? AND tblaccount.accountID=tbluseraccount.accountID";
+                        $query = "SELECT firstName, lastName, username FROM tblaccount, tbluseraccount WHERE userID=? AND tblaccount.accountID = tbluseraccount.accountID";
                         $statement = $connection->prepare($query);
                         $statement->bind_param("s", $_SESSION['userID']);
                         $statement->execute();

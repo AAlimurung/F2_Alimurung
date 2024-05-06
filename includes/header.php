@@ -21,7 +21,7 @@
 				';
 			} else {
 				echo '
-				<a href="#">
+				<a href="profile.php">
 					<span class="nav-item">Profile</span>
 				</a>
 				<a href="logout.php">

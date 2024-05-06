@@ -9,7 +9,7 @@
     maka change nag profile pic ang user/admin -->
 
 <link rel="stylesheet" type="text/css" href="css/profile-styles.css">
-<link rel="stylesheet" type="text/css" href="css/profile-settings-styles.css">
+<link rel="stylesheet" type="text/css" href="css/profile-settings.css">
 
 <body>
     <?php
@@ -99,7 +99,7 @@
                                                 </div>
                                                 '?>
                                                 <?php
-                                                    $statement_getAdminOrgs = $connection->prepare("SELECT organizationName FROM tblorganization, tbladminorganization WHERE tbladminorganization.adminID=? AND tblorganization.organizationID=tbladminorganization.organizationID");
+                                                    $statement_getAdminOrgs = $connection->prepare("SELECT organizationName FROM tblorganization, tblorganizationadmin WHERE tblorganizationadmin.adminID=? AND tblorganization.organizationID=tblorganizationadmin.organizationID");
                                                     $statement_getAdminOrgs->bind_param("i", $_SESSION['adminID']);
                                                     $statement_getAdminOrgs->execute();
                                                     $res = $statement_getAdminOrgs->get_result();
