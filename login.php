@@ -6,8 +6,8 @@
 ?>
 
 <body>
-    <link href="css/login-styles.css" type="text/css" rel="stylesheet" />
     <link href="css/common-styles.css" type="text/css" rel="stylesheet" />
+    <link href="css/login-styles.css" type="text/css" rel="stylesheet" />
 
     <center>
         <img class="logo-big" src="images/logo-1.png">
@@ -27,6 +27,9 @@
                     Forgot Password?
                 </a>
             </div>
+
+            <div id="exist"></div>
+
             <button class="login-btn" name="login" type="submit">
                 <!-- for effect ning mga span mamsh ha -->
                 <span></span>

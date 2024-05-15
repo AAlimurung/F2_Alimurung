@@ -1,12 +1,12 @@
 <?php
 	include 'connect.php';
 
-    // error_reporting(E_ALL);
-    // ini_set('display_errors', 1);
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
 ?>  
 <body>
-    <link href="css/register-styles.css" type="text/css" rel="stylesheet"/>
     <link href="css/common-styles.css" type="text/css" rel="stylesheet"/>
+    <link href="css/register-styles.css" type="text/css" rel="stylesheet"/>
 
     <center>
         <img class="logo-big" src="images/logo-1.png"/>
@@ -189,7 +189,7 @@
                 $_SESSION['adminID'] = $userID;
                 $_SESSION['username'] = $username;
             }
-            
+
             header("location: index.php");
         } else {
             echo "<script>alert('Username or Email Address already exists');</script>";

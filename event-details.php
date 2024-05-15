@@ -8,7 +8,7 @@
     <?php
         require_once 'includes/header.php';
 
-        $statement_getEvent = $connection->prepare("SELECT * FROM tblevents WHERE eventID=?");
+        $statement_getEvent = $connection->prepare("SELECT * FROM tblevent WHERE eventID=?");
         $statement_getEvent->bind_param("i", $_GET['eventID']);
         $statement_getEvent->execute();
         $e = $statement_getEvent->get_result()->fetch_assoc();

@@ -7,7 +7,7 @@
     <?php
     	include('includes/header.php');
 
-        $statement_eventInfo = $connection->prepare("SELECT * FROM tblevents WHERE eventID=? AND adminID=?"); //naniguro lng hehe
+        $statement_eventInfo = $connection->prepare("SELECT * FROM tblevent WHERE eventID=? AND adminID=?"); //naniguro lng hehe
         $statement_eventInfo->bind_param("ii", $_GET['eventID'], $_SESSION['adminID']);
         $statement_eventInfo->execute();
         $e = $statement_eventInfo->get_result()->fetch_assoc();
@@ -73,7 +73,7 @@
             $eventDescription = $_POST['description'];
 
                 
-            $statement_addEvents = $connection->prepare("UPDATE tblevents SET eventName=?, eventType=?, date=?, time=?, venue=?, description=? WHERE eventID=?");
+            $statement_addEvents = $connection->prepare("UPDATE tblevent SET eventName=?, eventType=?, date=?, time=?, venue=?, description=? WHERE eventID=?");
             $statement_addEvents->bind_param("ssssssi", $eventName, $eventType, $eventDate, $eventTime, $eventVenue, $eventDescription, $_GET['eventID']);
             $statement_addEvents->execute();
             // $add_pic = $connection->insert_id;
@@ -88,7 +88,7 @@
                 } else {
                     move_uploaded_file($temp_pic_name, "images/events/" . $unique_filename);
 
-                    $statement_addPicEvents = $connection->prepare("UPDATE tblevents SET image=? WHERE eventID=?");
+                    $statement_addPicEvents = $connection->prepare("UPDATE tblevent0 SET image=? WHERE eventID=?");
                     $statement_addPicEvents->bind_param("si", $unique_filename, $_GET['eventID']);
                     $statement_addPicEvents->execute();
                 }

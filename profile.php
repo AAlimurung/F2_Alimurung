@@ -9,6 +9,19 @@
         require_once 'includes/header.php';
     ?>
 
+    <?php
+        if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] === true){
+                
+            echo '
+                <div class="for-admin">
+                    <a href="report-page.php">
+                        <span>Report Page</span>
+                    </a>
+                </div>
+                ';
+            }
+        ?>   
+
     <div class="main">
     <!-- begin main  -->
         <div class="profile">
@@ -94,7 +107,7 @@
                                             </span>
                                         ';
                                     } else {
-                                        $statement_duolNa = $connection->prepare("SELECT eventName FROM tblevents INNER JOIN tbluserevents ON tblevents.eventID=tbluserevents.eventID AND tbluserevents.userID=? AND tblevents.date >= CURDATE() ORDER BY tblevents.date ASC, tblevents.time LIMIT 1");
+                                        $statement_duolNa = $connection->prepare("SELECT eventName FROM tblevent INNER JOIN tbluserevents ON tblevent.eventID=tbluserevents.eventID AND tbluserevents.userID=? AND tblevent.date >= CURDATE() ORDER BY tblevent.date ASC, tblevent.time LIMIT 1");
                                         $statement_duolNa->bind_param("i", $_SESSION['userID']);
                                         $statement_duolNa->execute();
                                         $alarm = $statement_duolNa->get_result()->fetch_column();
@@ -112,7 +125,7 @@
                             <div class="total-events">
                                 <?php
                                     if ($_SESSION['isAdmin']){
-                                        $statement_getTotalCreate = $connection->prepare("SELECT COUNT(eventID) AS TotalCreate FROM tblevents WHERE adminID=?");
+                                        $statement_getTotalCreate = $connection->prepare("SELECT COUNT(eventID) AS TotalCreate FROM tblevent WHERE adminID=?");
                                         $statement_getTotalCreate->bind_param("i", $_SESSION['adminID']);
                                         $statement_getTotalCreate->execute();
                                         $total_create = $statement_getTotalCreate->get_result()->fetch_column();
@@ -164,9 +177,9 @@
                             
                             <?php
                                 if ($_SESSION['isAdmin']){
-                                    $statement_topevents = $connection->prepare("SELECT tblevents.eventID, eventName, eventType, image, COUNT(tbluserevents.eventID) AS total_join 
-                                                                                    FROM tblevents, tbluserevents
-                                                                                    WHERE tblevents.adminID=? AND tblevents.date >= CURDATE() AND tbluserevents.eventID=tblevents.eventID
+                                    $statement_topevents = $connection->prepare("SELECT tblevent.eventID, eventName, eventType, image, COUNT(tbluserevents.eventID) AS total_join 
+                                                                                    FROM tblevent, tbluserevents
+                                                                                    WHERE tblevent.adminID=? AND tblevent.date >= CURDATE() AND tbluserevents.eventID=tblevent.eventID
                                                                                     GROUP BY tbluserevents.eventID
                                                                                     ORDER BY COUNT(tbluserevents.eventID) DESC
                                                                                     ");
@@ -198,7 +211,7 @@
                                     }
 
                                 } else {
-                                    $statement_upcoming_events = $connection->prepare("SELECT tblevents.eventID, eventName, eventType, date, time, image FROM tblevents INNER JOIN tbluserevents ON tblevents.eventID=tbluserevents.eventID AND tbluserevents.userID=? AND tblevents.date >= CURDATE() ORDER BY tblevents.date ASC, tblevents.time ASC");
+                                    $statement_upcoming_events = $connection->prepare("SELECT tblevent.eventID, eventName, eventType, date, time, image FROM tblevent INNER JOIN tbluserevents ON tblevent.eventID=tbluserevents.eventID AND tbluserevents.userID=? AND tblevent.date >= CURDATE() ORDER BY tblevent.date ASC, tblevent.time ASC");
                                     $statement_upcoming_events->bind_param("i", $_SESSION['userID']);
                                     $statement_upcoming_events->execute();
                                     $res_upEvents = $statement_upcoming_events->get_result();
@@ -235,7 +248,7 @@
                     <div class="list-top-events">
                         <?php
                             if ($_SESSION['isAdmin']){
-                                $statement_adminEvents = $connection->prepare("SELECT eventID, eventName, eventType, image FROM tblevents WHERE adminID=? ORDER BY eventID DESC");
+                                $statement_adminEvents = $connection->prepare("SELECT eventID, eventName, eventType, image FROM tblevent WHERE adminID=? ORDER BY eventID DESC");
                                 $statement_adminEvents->bind_param("i", $_SESSION['adminID']);
                                 $statement_adminEvents->execute();
                                 $res_adminEvents = $statement_adminEvents->get_result();
@@ -258,7 +271,7 @@
                                         <div class="delete-update">
                                             <div>
                                                 <a href="includes/deleteEvents.php?eventID='.$e['eventID'].'">
-                                                    DELETE
+                                                    Cancel
                                                 </a>
                                                 <a href="edit-event.php?eventID='.$e['eventID'].'">
                                                     UPDATE
@@ -270,7 +283,7 @@
                                 }
                             // <?php endwhile; 
                             } else {
-                                $statement_userEvents = $connection->prepare("SELECT tblevents.eventID, eventName, eventType, image FROM tblevents INNER JOIN tbluserevents ON tblevents.eventID = tbluserevents.eventID AND tbluserevents.userID=? ORDER BY tblevents.date DESC, tblevents.time DESC");
+                                $statement_userEvents = $connection->prepare("SELECT tblevent.eventID, eventName, eventType, image FROM tblevent INNER JOIN tbluserevents ON tblevent.eventID = tbluserevents.eventID AND tbluserevents.userID=? ORDER BY tblevent.date DESC, tblevent.time DESC");
                                 $statement_userEvents->bind_param("i", $_SESSION['userID']);
                                 $statement_userEvents->execute();
                                 $res_userEvents = $statement_userEvents->get_result();

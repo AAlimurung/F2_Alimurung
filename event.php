@@ -17,7 +17,7 @@
         <a href="report-page.php">
             <span>Event Dash</span>
         </a>
-        <a href="your_events.php">
+        <a href="your-events.php">
             <span>Your Events</span>
          </a>
         </div>
@@ -61,6 +61,10 @@
                 <label for="description">Description</label>
                 <textarea name="description" id="description" required></textarea>
             </div>
+            <div  class="info-events">
+                <label for="event-stat">Event Status</label>
+                <input name="Status" id="event-stat" required></textarea>
+            </div>
         </div>
     </div>
     <br>
@@ -79,6 +83,7 @@ if(isset($_POST['create'])){
     $eventTime = $_POST['time'];
     $eventVenue = $_POST['venue'];
     $eventDescription = $_POST['description'];
+    $eventStatus = $_POST['eventStatus']; //Upcoming, Finished, Ongoing, Deleted (Deactivated/Cancelled)
 
     $statement_checkEvents = $connection->prepare("SELECT eventName, eventType FROM tblevents WHERE eventName=? AND eventType=?");
     $statement_checkEvents->bind_param("ss", $eventName, $eventType);
@@ -87,8 +92,8 @@ if(isset($_POST['create'])){
     
     if(!$result){
         
-        $statement_addEvents = $connection->prepare("INSERT INTO tblevents (adminID, eventName, eventType, date, time, venue, description) VALUES (?,?,?,?,?,?,?)");
-        $statement_addEvents->bind_param("issssss", $_SESSION['adminID'], $eventName, $eventType, $eventDate, $eventTime, $eventVenue, $eventDescription);
+        $statement_addEvents = $connection->prepare("INSERT INTO tblevents (adminID, eventName, eventType, date, time, venue, description, eventStatus) VALUES (?,?,?,?,?,?,?, ?)");
+        $statement_addEvents->bind_param("isssssss", $_SESSION['adminID'], $eventName, $eventType, $eventDate, $eventTime, $eventVenue, $eventDescription, $eventStatus);
         $statement_addEvents->execute();
         $add_pic = $connection->insert_id;
         

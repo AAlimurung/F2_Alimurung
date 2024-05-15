@@ -36,7 +36,7 @@
                     return $res->num_rows > 0;
                 }
 
-                $Statement_allEvents = $connection->prepare("SELECT eventID, eventName, eventType, date, time, image FROM tblevents ORDER BY eventID DESC");
+                $Statement_allEvents = $connection->prepare("SELECT eventID, eventName, eventType, date, time, image FROM tblevent ORDER BY eventID DESC");
                 $Statement_allEvents->execute();
                 $res = $Statement_allEvents->get_result();
     
