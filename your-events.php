@@ -22,11 +22,14 @@
                         <a href="your-events.php">
                             <span>Your Events</span>
                         </a>
+                        <a href="report-page.php">
+                            <span>Report</span>
+                        </a>
                     </div>
                     ';
                 }
             ?>   
-        <div class="for-events">
+         <div class="for-events">
             <?php
                 function isJoin($connection, $eventID) {
                     $statement_letsee = $connection->prepare("SELECT userID FROM tbluserevents WHERE userID=? AND eventID=?");
@@ -36,11 +39,17 @@
                     return $res->num_rows > 0;
                 }
 
-                $Statement_allEvents = $connection->prepare("SELECT eventID, eventName, eventType, date, time, image FROM tblevent ORDER BY eventID DESC");
+                $Statement_allEvents = $connection->prepare("SELECT tblevent.eventID, tblevent.eventName, tblevent.eventType, tblevent.date, tblevent.time, tblevent.venue, tblevent.description, tblevent.image, tblevent.isDelete
+                                                            FROM tblevent  
+                                                            INNER JOIN tbladminaccount ON tbladminaccount.adminID = tblevent.adminID
+                                                            INNER JOIN tblaccount ON tbladminaccount.accountID = tblaccount.accountID
+                                                            WHERE tblevent.isDelete = 0 AND tblaccount.isDelete = 0
+                                                            ORDER BY tblevent.eventID DESC");
                 $Statement_allEvents->execute();
                 $res = $Statement_allEvents->get_result();
     
                 while ($e = $res->fetch_assoc()):
+                    if (!$e['isDelete']):
             ?>
         
             <div class="event-container">
@@ -84,6 +93,7 @@
                     </div>
                 </div>
             </div>
+            <?php endif; ?>
             <?php endwhile; ?>
         </div>
     </div>
