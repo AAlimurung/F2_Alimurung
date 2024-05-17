@@ -241,38 +241,34 @@
 
         <!-- CHART OF: NUMBER OF PUBLIC, SEMI-PUBLIC AND PRIVATE EVENTS -->
         <?php
-            function displayPieChart(){
-                global $connnection;
+            $sql = "SELECT COUNT(eventType) as public_type FROM tblevent WHERE eventType = 'Public'";
+            $eventType1_result = mysqli_query($connection,$sql);
+            $row = mysqli_fetch_assoc($eventType1_result);
+            $public_type = $row["public_type"];
 
-                $sql_query = 'SELECT eventType, COUNT(*) as count FROM tblevent GROUP BY eventType';
-                $res = mysqli_query($connnection, $sql_query);
-                $eventTypeData = [];
+            $sql = "SELECT COUNT(eventType) as private_type FROM tblevent WHERE eventType = 'Private'";
+            $eventType2_result = mysqli_query($connection,$sql);
+            $row = mysqli_fetch_assoc($eventType2_result);
+            $private_type = $row["private_type"];
 
-                while($row = $res->fetch_assoc()){
-                    $eventTypeData[$row['eventType']] = $row['count'];
-                }
-                return $eventTypeData;
-            }
-
+            $sql = "SELECT COUNT(eventType) as semi_type FROM tblevent WHERE eventType = 'Semi-Public'";
+            $eventType3_result = mysqli_query($connection,$sql);
+            $row = mysqli_fetch_assoc($eventType3_result);
+            $semi_type = $row["semi_type"];
         ?>
         <div class="chart">
-            <canvas id="eventTypeChart" width="400" height="400"></canvas>
+            <canvas id="eventTypeChart" width="200" height="200"></canvas>
         </div>
-
         <script>
-            const eventTypes = <?= $eventTypesJSON; ?>;
-            const eventCounts = <?= $eventTypeDataJSON; ?>;
-            //const eventData = <?php echo $eventTypeDataJson; ?>;
+            var ctx = document.getElementById('eventTypeChart').getValue('2d');
 
-            const ctx = document.getElementById('eventTypeChart').getValue('2d');
-
-            new Chart(ctx,{
+            var eventTypeChart = new Chart(ctx,{
                 type: 'pie',
                 data: {
-                    labels: ['eventTypes'],
+                    labels: ['Public', 'Semi-Public', 'Private'],
                     datasets: [{
-                        label: 'Number of Joined Events by Type',
-                        data: eventCounts,
+                        label: '# of Events by Type',
+                        data: [<?php echo $public_type;?>, <?php echo $private_type;?>, <?php echo $semi_type;?>],
                         backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
