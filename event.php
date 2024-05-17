@@ -60,10 +60,10 @@
                             <label for="description">Description</label>
                             <textarea name="description" id="description" required></textarea>
                         </div>
-                        <div  class="info-events">
+                        <!-- <div  class="info-events">
                             <label for="event-stat">Event Status</label>
                             <input name="Status" id="event-stat" required></textarea>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <br>

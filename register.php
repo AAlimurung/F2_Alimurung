@@ -1,105 +1,22 @@
 <?php
-	include 'connect.php';
+    include 'connect.php';
+    // error_reporting(E_ALL);
+    // ini_set('display_errors', 1);
 
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-?>  
-<body>
-    <link href="css/common-styles.css" type="text/css" rel="stylesheet"/>
-    <link href="css/register-styles.css" type="text/css" rel="stylesheet"/>
-
-    <center>
-        <img class="logo-big" src="images/logo-1.png"/>
-    </center>
-    <div class="register-box">
-        <h2> CREATE ACCOUNT </h2>
-        <form action="" method="POST">
-            <div class="form-div">
-                <div class="inline-div">
-                    <div class="user-box">
-                        <select class="typing selecting" id="accountType" name="accountType" required="true">
-                            <option value="admin">Administrator</option>
-                            <option value="user">User</option>
-                        </select>
-                        <label class="label-input">Account Type</label>
-                    </div>
-                    <div class="user-box">
-                        <input class="typing" type="text" name="username" required="true">
-                        <label class="label-input">Username</label>
-                    </div>
-                    <div class="user-box" id="orgField">
-                        <input class="typing" type="text" name="organization" required>
-                        <label class="label-input">Organization</label>
-                    </div>
-                    <script src="js/register.js"></script>
-                </div>
-                <div class="inline-div">
-                    
-                    <div class="inner-inline">
-                        <div class="user-box">
-                            <input class="typing" type="text" name="firstName" required="true">
-                            <label class="label-input">First Name</label>
-                        </div>
-                        <div class="user-box">
-                            <input class="typing" type="text" name="lastName" required="true">
-                            <label class="label-input">Last Name</label>
-                        </div>
-                    </div>    
-
-                    <div class="inner-inline">
-                        <div class="user-box">
-                            <input class="typing" type="number" name="age" required="true">
-                            <label class="label-input">Age</label>
-                        </div>
-                        <div class="user-box">
-                            <!-- <input class="typing" type="number" name="" required=""> -->
-                            <select class="typing selecting" name="gender" required="true">
-                                <option value="MALE">Male</option>
-                                <option value="FEMALE">Female</option>
-                            </select>
-                            <label class="label-input">Gender</label>
-                        </div>
-                    </div>
-                    <div class="user-box">
-                        <input class="typing" type="email" name="email" required="true">
-                        <label class="label-input">Email</label>
-                    </div>
-                    <div class="user-box">
-                        <input class="typing" type="password" name="password" required="true">
-                        <label class="label-input">Password</label>
-                    </div>
-                </div>
-            </div>
-            <button class="register-btn" name="sign-up" type="submit" onclick="console.log('Button clicked');">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                Register
-            </button>
-        </form>
-        <hr>
-        <span class="have-account">
-            Already Registered?
-            <a id="to-login" href="login.php">Login</a>
-        </span>
-    </div>
-</body>
-<?php
     if(isset($_POST['sign-up'])){
         
         //for tblaccount
-        $fname=$_POST['firstName'];
-        $lname=$_POST['lastName'];
-        $username=$_POST['username'];
-        $age=$_POST['age'];
-        $gender=$_POST['gender'];
-        $email=$_POST['email'];
-        $pword=$_POST['password'];
-        $account_type=$_POST['accountType'];
+        $fname = $_POST['firstName'];
+        $lname = $_POST['lastName'];
+        $username = $_POST['username'];
+        $age = $_POST['age'];
+        $gender = $_POST['gender'];
+        $email = $_POST['email'];
+        $pword = $_POST['password'];
+        $account_type = $_POST['accountType'];
 
         //hash password
-        $hash_pword = password_hash($pword,PASSWORD_BCRYPT);
+        $hash_pword = password_hash($pword, PASSWORD_BCRYPT);
 
         // Check if username or email already exist
         $sql = "SELECT * FROM tblaccount WHERE username=? OR email=?";
@@ -110,15 +27,16 @@
         $row = $result->num_rows;
 
         if($row == 0){
-        // Insert into tblaccount
-        $sql_account ="INSERT INTO tblaccount (firstName, lastName, username, age, gender, email, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        $stmt_account = $connection->prepare($sql_account);
-        $stmt_account->bind_param("sssssss", $fname, $lname, $username, $age, $gender, $email, $hash_pword);
-        $stmt_account->execute();
-        $accountID = $stmt_account->insert_id;
+            // Insert into tblaccount
+            $sql_account ="INSERT INTO tblaccount (firstName, lastName, username, age, gender, email, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $stmt_account = $connection->prepare($sql_account);
+            $stmt_account->bind_param("sssssss", $fname, $lname, $username, $age, $gender, $email, $hash_pword);
+            $stmt_account->execute();
+            $accountID = $stmt_account->insert_id;
 
             if ($account_type == 'admin'){
-                $organizationName=$_POST['organization'];
+                $organizationName = $_POST['organization'];
+
                 // Insert into tblorganization if not exists
                 $sql_orgFind = "SELECT * FROM tblorganization WHERE organizationName=?";
                 $stmt_orgFind = $connection->prepare($sql_orgFind);
@@ -190,11 +108,93 @@
                 $_SESSION['username'] = $username;
             }
 
-            header("location: index.php");
+            header("Location: index.php");
+            exit();
         } else {
             echo "<script>alert('Username or Email Address already exists');</script>";
         }
     } else {
-    echo "<script>alert('Form not submitted');</script>";
+        echo "<script>alert('Form not submitted');</script>";
     }
 ?>
+
+<body>
+    <link href="css/common-styles.css" type="text/css" rel="stylesheet"/>
+    <link href="css/register-styles.css" type="text/css" rel="stylesheet"/>
+
+    <center>
+        <img class="logo-big" src="images/logo-1.png"/>
+    </center>
+    <div class="register-box">
+        <h2> CREATE ACCOUNT </h2>
+        <form action="" method="POST">
+            <div class="form-div">
+                <div class="inline-div">
+                    <div class="user-box">
+                        <select class="typing selecting" id="accountType" name="accountType" required="true">
+                            <option value="admin">Administrator</option>
+                            <option value="user">User</option>
+                        </select>
+                        <label class="label-input">Account Type</label>
+                    </div>
+                    <div class="user-box">
+                        <input class="typing" type="text" name="username" required="true">
+                        <label class="label-input">Username</label>
+                    </div>
+                    <div class="user-box" id="orgField">
+                        <input class="typing" type="text" name="organization" required>
+                        <label class="label-input">Organization</label>
+                    </div>
+                    <script src="js/register.js"></script>
+                </div>
+                <div class="inline-div">
+                    <div class="inner-inline">
+                        <div class="user-box">
+                            <input class="typing" type="text" name="firstName" required="true">
+                            <label class="label-input">First Name</label>
+                        </div>
+                        <div class="user-box">
+                            <input class="typing" type="text" name="lastName" required="true">
+                            <label class="label-input">Last Name</label>
+                        </div>
+                    </div>    
+
+                    <div class="inner-inline">
+                        <div class="user-box">
+                            <input class="typing" type="number" name="age" required="true">
+                            <label class="label-input">Age</label>
+                        </div>
+                        <div class="user-box">
+                            <!-- <input class="typing" type="number" name="" required=""> -->
+                            <select class="typing selecting" name="gender" required="true">
+                                <option value="MALE">Male</option>
+                                <option value="FEMALE">Female</option>
+                            </select>
+                            <label class="label-input">Gender</label>
+                        </div>
+                    </div>
+                    <div class="user-box">
+                        <input class="typing" type="email" name="email" required="true">
+                        <label class="label-input">Email</label>
+                    </div>
+                    <div class="user-box">
+                        <input class="typing" type="password" name="password" required="true">
+                        <label class="label-input">Password</label>
+                    </div>
+                </div>
+            </div>
+            <button class="register-btn" name="sign-up" type="submit" onclick="console.log('Button clicked');">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                Register
+            </button>
+        </form>
+        <hr>
+        <span class="have-account">
+            Already Registered?
+            <a id="to-login" href="login.php">Login</a>
+        </span>
+    </div>
+</body>

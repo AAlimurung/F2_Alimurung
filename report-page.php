@@ -20,11 +20,11 @@
         <!-- MOST JOINED EVENTS -->
     <?php
             $ctr = 1;  
-            $sql_mostJoin ="SELECT username, COUNT(tbluserevents.userID) AS total
+            $sql_mostJoin ="SELECT tblaccount.username, COUNT(tbluserevents.userID) AS total
                             FROM tblaccount
-                            INNER JOIN tbluseraccount ON tblaccount.accountID = tbluseraccount.accountID AND tblaccount.isDelete=0
+                            INNER JOIN tbluseraccount ON tblaccount.accountID = tbluseraccount.accountID AND tblaccount.isDeleted=0
                             INNER JOIN tbluserevents ON tbluserevents.userID = tbluseraccount.userID
-                            INNER JOIN tblevent ON tbluserevents.eventID = tblevent.eventID AND tblevent.isDelete=0
+                            INNER JOIN tblevent ON tbluserevents.eventID = tblevent.eventID AND tblevent.eventStatus=0
                             GROUP BY username
             ";
             $mostJoin_result = mysqli_query($connection,$sql_mostJoin);
@@ -67,7 +67,7 @@
                             INNER JOIN tbladminaccount
                             ON tblorganizationadmin.adminID = tbladminaccount.adminID
                             INNER JOIN tblaccount
-                            ON tbladminaccount.accountID = tblaccount.accountID AND isDelete=0
+                            ON tbladminaccount.accountID = tblaccount.accountID AND isDeleted=0
                             GROUP BY organizationName
             ";
             $mostJoin_result = mysqli_query($connection,$sql_mostJoin);
@@ -107,7 +107,7 @@
                             FROM tblevent
                             INNER JOIN tbluserevents
                             ON tbluserevents.eventID = tblevent.eventID
-                            WHERE isDelete=0
+                            WHERE eventStatus=0
                             GROUP BY eventName
             ";
             $mostJoin_result = mysqli_query($connection,$sql_mostJoin);
@@ -149,7 +149,7 @@
             $ctr = 1;   
             $sql_releaseDate = "SELECT COUNT(eventID) AS count, MONTH(date) AS release_months, YEAR(date) AS release_year 
                         FROM tblevent
-                        WHERE date >= CURDATE() AND isDelete=0
+                        WHERE date >= CURDATE() AND eventStatus=0
                         GROUP BY MONTH(date), 
                                 YEAR(date)
                         ORDER BY 
@@ -201,7 +201,7 @@
                                                                             ) AS avg_counts
                                                                         ) AS average 
                             FROM tblevent
-                            WHERE isDelete=0
+                            WHERE eventStatus=0
                             GROUP BY eventType";
             $eventType_result = mysqli_query($connection,$sql_eventType);
             $res;
@@ -240,22 +240,56 @@
         </table> 
 
         <!-- CHART OF: NUMBER OF PUBLIC, SEMI-PUBLIC AND PRIVATE EVENTS -->
+        <?php
+            function displayPieChart(){
+                global $connnection;
+
+                $sql_query = 'SELECT eventType, COUNT(*) as count FROM tblevent GROUP BY eventType';
+                $res = mysqli_query($connnection, $sql_query);
+                $eventTypeData = [];
+
+                while($row = $res->fetch_assoc()){
+                    $eventTypeData[$row['eventType']] = $row['count'];
+                }
+                return $eventTypeData;
+            }
+
+        ?>
         <div class="chart">
-            <canvas id="chart"></canvas>
+            <canvas id="eventTypeChart" width="400" height="400"></canvas>
         </div>
 
         <script>
-            const ctx = document.getElementById('chart');
+            const eventTypes = <?= $eventTypesJSON; ?>;
+            const eventCounts = <?= $eventTypeDataJSON; ?>;
+            //const eventData = <?php echo $eventTypeDataJson; ?>;
+
+            const ctx = document.getElementById('eventTypeChart').getValue('2d');
 
             new Chart(ctx,{
                 type: 'pie',
                 data: {
-                    labels: ['Public', 'Semi-Public', 'Private'],
+                    labels: ['eventTypes'],
                     datasets: [{
                         label: 'Number of Joined Events by Type',
-                        data: [],
+                        data: eventCounts,
+                        backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)'],
+                        borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)'],
                         borderWidth: 1
                     }]
+                },
+                options:{
+                    scales:{
+                        y:{
+                            beginAtZero: true;
+                        }
+                    }
                 }
             });
         </script>
@@ -341,7 +375,7 @@
         
         <?php
             $ctr = 1;   
-            $sql_theEvent ="SELECT tblaccount.username, tblevent.eventName, COUNT(tbluserevents.id) AS total
+            $sql_theEvent ="SELECT tblaccount.username, tblevent.eventName, COUNT(tbluserevents.usereventsid) AS total
                             FROM tblevent
                             LEFT JOIN tbluserevents ON tblevent.eventID=tbluserevents.eventID
                             LEFT JOIN tbladminaccount ON tblevent.adminID=tbladminaccount.adminID

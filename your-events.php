@@ -39,11 +39,11 @@
                     return $res->num_rows > 0;
                 }
 
-                $Statement_allEvents = $connection->prepare("SELECT tblevent.eventID, tblevent.eventName, tblevent.eventType, tblevent.date, tblevent.time, tblevent.venue, tblevent.description, tblevent.image, tblevent.isDelete
+                $Statement_allEvents = $connection->prepare("SELECT tblevent.eventID, tblevent.eventName, tblevent.eventType, tblevent.date, tblevent.time, tblevent.venue, tblevent.description, tblevent.image, tblevent.eventStatus
                                                             FROM tblevent  
                                                             INNER JOIN tbladminaccount ON tbladminaccount.adminID = tblevent.adminID
                                                             INNER JOIN tblaccount ON tbladminaccount.accountID = tblaccount.accountID
-                                                            WHERE tblevent.isDelete = 0 AND tblaccount.isDelete = 0
+                                                            WHERE tblevent.eventStatus = 0 AND tblaccount.isDeleted = 0
                                                             ORDER BY tblevent.eventID DESC");
                 $Statement_allEvents->execute();
                 $res = $Statement_allEvents->get_result();
