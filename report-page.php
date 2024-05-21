@@ -2,14 +2,11 @@
     include 'connect.php';
 ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="css/common-styles.css" type="text/css" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
-<!-- <head>
-    <meta charset="UTF-8">
-    <title>CONquest: Event Planner</title>
-    <link href="css/common-styles.css" type="text/css" rel="stylesheet">
 
-</head> -->
+</head>
 <body>
     <?php
     	include('includes/header.php');
@@ -108,7 +105,7 @@
                             INNER JOIN tbluserevents
                             ON tbluserevents.eventID = tblevent.eventID
                             WHERE eventStatus=0
-                            GROUP BY eventName
+                            GROUP BY eventName DESC
             ";
             $mostJoin_result = mysqli_query($connection,$sql_mostJoin);
         ?>
@@ -257,36 +254,43 @@
             $semi_type = $row["semi_type"];
         ?>
         <div class="chart">
-            <canvas id="eventTypeChart" width="200" height="200"></canvas>
+            <canvas id="eventTypeChart"></canvas>
         </div>
         <script>
-            var ctx = document.getElementById('eventTypeChart').getValue('2d');
+            var ctx = document.getElementById('eventTypeChart').getContext('2d');
 
             var eventTypeChart = new Chart(ctx,{
                 type: 'pie',
-                data: {
-                    labels: ['Public', 'Semi-Public', 'Private'],
-                    datasets: [{
-                        label: '# of Events by Type',
-                        data: [<?php echo $public_type;?>, <?php echo $private_type;?>, <?php echo $semi_type;?>],
-                        backgroundColor: [
+            data: {
+                labels: ['Public', 'Semi-Public', 'Private'],
+                datasets: [{
+                    label: '# of Events by Type',
+                    data: [<?php echo $public_type; ?>, <?php echo $semi_type; ?>, <?php echo $private_type; ?>],
+                    backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)'],
-                        borderColor: [
+                        'rgba(255, 206, 86, 0.2)'
+                    ],
+                    borderColor: [
                         'rgba(255, 99, 132, 1)',
                         'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)'],
-                        borderWidth: 1
-                    }]
-                },
-                options:{
-                    scales:{
-                        y:{
-                            beginAtZero: true;
-                        }
+                        'rgba(255, 206, 86, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Number of Events by Type'
                     }
                 }
+            }
             });
         </script>
 

@@ -6,7 +6,7 @@
 		<a href="index.php">
 			<span class="nav-item">Home</span>
 		</a>
-		<a href="event.php">
+		<a href="your-events.php">
 			<span class="nav-item">Events</span>
 		</a>
 		<?php

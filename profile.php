@@ -55,7 +55,7 @@
                         $statement->execute();
                         $res = $statement->get_result();
                     } else {
-                        $query = "SELECT firstName, lastName, username FROM tblaccount, tbluseraccount WHERE userID=? AND tblaccount.accountID=tbluseraccount.accountID";
+                        $query = "SELECT tblaccount.firstName, tblaccount.lastName, tblaccount.username FROM tblaccount, tbluseraccount WHERE userID=? AND tblaccount.accountID=tbluseraccount.accountID";
                         $statement = $connection->prepare($query);
                         $statement->bind_param("s", $_SESSION['userID']);
                         $statement->execute();
@@ -138,7 +138,7 @@
                                             </span>
                                         ';
                                     } else {
-                                        $statement_totalJoin = $connection->prepare("SELECT COUNT(id) AS TotalJoin FROM tbluserevents WHERE userID=?");
+                                        $statement_totalJoin = $connection->prepare("SELECT COUNT(usereventsid) AS TotalJoin FROM tbluserevents WHERE userID=?");
                                         $statement_totalJoin->bind_param("i", $_SESSION['userID']);
                                         $statement_totalJoin->execute();
                                         $total_join = $statement_totalJoin->get_result()->fetch_column();

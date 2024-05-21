@@ -4,7 +4,7 @@
     $accountID = $_GET['accountID'];
     $res = NULL;
 
-    $sql_query = "SELECT accountID, username, isDeleted FROM tblaccount WHERE accountID != $eventID && isDeleted = 1";
+    $sql_query = "SELECT accountID, username, isDeleted FROM tblaccount WHERE accountID != '.$username.' && isDelete = 1";
     try {
         $res = mysqli_query($conn, $sql_query);
     }catch(Exception $e) {

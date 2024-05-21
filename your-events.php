@@ -1,7 +1,7 @@
+<link rel="stylesheet" href="css/events-styles.css" type="text/css"/>
 <?php
     include'connect.php';
 ?>
-<link rel="stylesheet" href="css/events-styles.css" type="text/css"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
@@ -18,9 +18,6 @@
                     <div class="for-admin">
                         <a href="event.php">
                             <span>Create Event</span>
-                        </a>
-                        <a href="your-events.php">
-                            <span>Your Events</span>
                         </a>
                         <a href="report-page.php">
                             <span>Report</span>
@@ -49,7 +46,7 @@
                 $res = $Statement_allEvents->get_result();
     
                 while ($e = $res->fetch_assoc()):
-                    if (!$e['isDelete']):
+                    if (!$e['eventStatus']):
             ?>
         
             <div class="event-container">
@@ -71,7 +68,7 @@
                                     if (!$_SESSION['isAdmin']){
                                         if (!isJoin($connection, $e['eventID'])){
                                             echo '
-                                                <a class="not-joined" href="includes/joinEvent.php?userID='.$_SESSION['userID'].'&eventID='.$e['eventID'].'">
+                                                <a class="not-joined" href="includes/join-event.php?userID='.$_SESSION['userID'].'&eventID='.$e['eventID'].'">
                                                     Join
                                                 </a>
                                             ';
