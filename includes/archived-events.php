@@ -4,7 +4,7 @@
     // $eventID = $_GET['eventID'];
     // $res = NULL;
 
-    $sql_query = "SELECT eventID, eventName, eventType, date, isDelete FROM tblevents WHERE isDelete = 1";
+    $sql_query = "SELECT eventID, eventName, eventType, date, eventStatus FROM tblevents WHERE eventStatus = 1";
     try {
         $res = mysqli_query($conn, $sql_query);
     }catch(Exception $e) {
